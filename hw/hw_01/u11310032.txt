@@ -1,0 +1,6 @@
+from obspy import read
+
+# 這行程式碼是直接讀取老師準備好的範例檔案 "earthquake.mseed"
+st = read("./data/earthquake.mseed") 
+
+st.plot() 
