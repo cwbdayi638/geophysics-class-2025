@@ -4,3 +4,16 @@ from obspy import read
 st = read("./data/earthquake.mseed") 
 
 st.plot() 
+
+import pygmt
+
+fig = pygmt.Figure()
+
+# 我把地圖範圍改成了日本
+fig.coast(region="[125, 148, 28, 48]", projection="M12c", shorelines=True, frame=True)
+
+# 我把我找到的日本地震經緯度填進去
+# 我還把樣式改成了紫色的星星！
+fig.plot(x=[139.5], y=[35.7], style="a0.4c", color="purple")
+
+fig.show()
