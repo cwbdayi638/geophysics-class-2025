@@ -17,3 +17,4 @@ fig.coast(region="[125, 148, 28, 48]", projection="M12c", shorelines=True, frame
 fig.plot(x=[139.5], y=[35.7], style="a0.4c", color="purple")
 
 fig.show()
+
