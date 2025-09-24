@@ -1,1 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>地球物理學程式設計 - 2025 課程專案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --bg:#0a0f1a;
+      --card:#0f1628;
+      --muted:#8aa0b6;
+      --text:#e6eef7;
+      --accent:#6ee7ff;
+      --accent-2:#8b5cf6;
+      --ok:#34d399;
+      --warn:#fbbf24;
+      --danger:#f87171;
+      --border:rgba(255,255,255,0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Noto Sans TC",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Microsoft JhengHei",sans-serif;
+      background:
+        radial-gradient(1200px 600px at 20% -10%, #16203a 0%, transparent 60%),
+        radial-gradient(1000px 800px at 120% 20%, #1a2344 0%, transparent 60%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.7;
+      letter-spacing:.2px;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1100px; margin:0 auto; padding:24px}
+    .hero{
+      margin:20px auto 28px;
+      padding:28px;
+      border:1px solid var(--border);
+      border-radius:calc(var(--radius) + 6px);
+      background:
+        linear-gradient(135deg, rgba(139,92,246,0.18), rgba(110,231,255,0.12)),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="%230ff" stop-opacity=".2"/><stop offset="1" stop-color="%238b5cf6" stop-opacity=".15"/></linearGradient></defs><circle cx="1100" cy="60" r="180" fill="url(%23g)"/></svg>') right/cover no-repeat,
+        var(--card);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px; border-radius:999px; font-size:12px;
+      background:rgba(110,231,255,.12); border:1px solid rgba(110,231,255,.25);
+      color:#c5f6ff; margin-bottom:12px
+    }
+    h1{margin:6px 0 10px; font-size:clamp(28px,4.5vw,44px); line-height:1.15; font-weight:800}
+    .lead{color:var(--muted); font-size:clamp(14px,2.2vw,18px); max-width:900px}
+    .grid{display:grid; gap:18px}
+    @media(min-width:900px){ .grid.cols-3{grid-template-columns:repeat(3,1fr)} .grid.cols-2{grid-template-columns:repeat(2,1fr)} }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)) , var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{margin:6px 0 10px; font-size:20px}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block; font-size:12px; padding:4px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); background:rgba(255,255,255,0.04)}
+    .list{margin:10px 0 0 0; padding-left:18px}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace; font-size:13px; background:#0b1322; border:1px solid var(--border); padding:2px 6px; border-radius:8px}
+    .codeblock{
+      position:relative; margin:12px 0; background:#0b1322; border:1px solid var(--border);
+      border-radius:12px; overflow:auto
+    }
+    pre{margin:0; padding:16px; white-space:pre; scrollbar-color:#3a4a63 transparent}
+    .copy{
+      position:absolute; top:8px; right:8px; background:#101a2b; color:var(--accent);
+      border:1px solid rgba(110,231,255,.35); border-radius:10px; padding:6px 10px; cursor:pointer;
+      font-size:12px
+    }
+    .section-title{
+      display:flex; align-items:center; gap:10px; margin:26px 0 10px;
+      font-size:22px; font-weight:800
+    }
+    .section-title .dot{width:10px; height:10px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+    details{
+      border:1px solid var(--border); border-radius:12px; background:rgba(255,255,255,0.02); margin:10px 0
+    }
+    summary{
+      list-style:none; cursor:pointer; padding:14px 16px; font-weight:600;
+      display:flex; align-items:center; gap:10px
+    }
+    summary::-webkit-details-marker{display:none}
+    details[open] summary{border-bottom:1px solid var(--border)}
+    .timeline{position:relative; margin: 8px 0 0}
+    .step{
+      position:relative; padding:14px 14px 14px 46px; border-left:2px dashed rgba(139,92,246,.35)
+    }
+    .step:before{
+      content:""; position:absolute; left: -7px; top:16px; width:14px; height:14px; border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2)); box-shadow:0 0 0 4px rgba(139,92,246,.18)
+    }
+    .btn-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:12px;
+      background:linear-gradient(135deg, rgba(110,231,255,.14), rgba(139,92,246,.14));
+      color:var(--text); border:1px solid var(--border); text-decoration:none; font-weight:600
+    }
+    .btn.small{padding:7px 10px; font-size:13px}
+    .callout{
+      border:1px solid var(--border); border-left:4px solid var(--ok);
+      background:rgba(52,211,153,.08); color:#d2ffee; border-radius:12px; padding:12px 14px; margin:12px 0
+    }
+    .warning{border-left-color:var(--warn); background:rgba(251,191,36,.08)}
+    .danger{border-left-color:var(--danger); background:rgba(248,113,113,.08)}
+    footer{
+      margin:30px 0 10px; color:var(--muted); font-size:13px; text-align:center
+    }
+    .icon{width:18px; height:18px; display:inline-block; vertical-align:-3px; opacity:.9}
+    .repo{
+      display:flex; align-items:center; gap:10px; padding:12px; border:1px dashed rgba(255,255,255,.15);
+      border-radius:12px; background:rgba(255,255,255,.02)
+    }
+    .kbdline{display:flex; gap:8px; flex-wrap:wrap; margin:6px 0}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <span class="badge">地球物理學程式設計 • 2025</span>
+      <h1>geophysics-class-2025 課程專案 👋</h1>
+      <p class="lead">
+        本課程的所有程式設計作業與實驗都在 <strong>GitHub Codespaces</strong> 上完成。你只需要一個瀏覽器，
+        無須安裝 Python、Conda、ObsPy、PyGMT 等工具。環境一致、協作便利、開箱即用！
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="https://github.com/cwbdayi638/geophysics-class-2025" target="_blank" rel="noopener">
+          <!-- link icon -->
+          <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7M10 14L21 3M5 21h14a2 2 0 0 0 2-2V9" stroke="currentColor" stroke-width="1.6"/></svg>
+          前往課程 Repo
+        </a>
+        <a class="btn" href="#workflow">
+          <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.6"/></svg>
+          快速開始
+        </a>
+      </div>
+      <div style="height:10px"></div>
+      <div class="repo">
+        <svg class="icon" viewBox="0 0 24 24" fill="none"><path d="M4 4h12a2 2 0 0 1 2 2v11l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/></svg>
+        <div>
+          <div><strong>Repo：</strong><a href="https://github.com/cwbdayi638/geophysics-class-2025" target="_blank" rel="noopener">cwbdayi638/geophysics-class-2025</a></div>
+          <div class="muted">Fork 後在你自己的帳號內建立 Codespace 開始學習。</div>
+        </div>
+      </div>
+    </header>
 
+    <!-- WHY Codespaces -->
+    <section id="why">
+      <div class="section-title"><span class="dot"></span><span>🚀 為什麼我們使用 GitHub Codespaces？</span></div>
+      <div class="grid cols-3">
+        <div class="card">
+          <h3>💻 免安裝、零設定</h3>
+          <p class="muted">所有軟體皆已預裝於雲端環境，開啟即用。</p>
+          <span class="pill">Python • ObsPy • PyGMT • Jupyter • VS Code</span>
+        </div>
+        <div class="card">
+          <h3>🌐 環境完全一致</h3>
+          <p class="muted">避免「我的電腦不能跑」的窘境，結果可重現。</p>
+          <span class="pill">Reproducible • Consistent</span>
+        </div>
+        <div class="card">
+          <h3>🤝 即時協作與問答</h3>
+          <p class="muted">老師/助教可直接進入你的 Codespace 指導除錯。</p>
+          <span class="pill">Live Help • Pair Debug</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick commands -->
+    <section id="quick">
+      <div class="section-title"><span class="dot"></span><span>⚡ 初始兩個常用指令</span></div>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>載入環境變數</h3>
+          <p class="muted">剛進入 Codespace 請先執行：</p>
+          <div class="codeblock">
+            <button class="copy" data-copy="source env.sh">複製</button>
+<pre><code>source env.sh</code></pre>
+          </div>
+        </div>
+        <div class="card">
+          <h3>推送到自己的 Repo</h3>
+          <p class="muted">把目前變更推到遠端（填入你的訊息）：</p>
+          <div class="codeblock">
+            <button class="copy" data-copy='sh git_all.sh "comments"'>複製</button>
+<pre><code>sh git_all.sh "comments"</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Repo structure -->
+    <section id="structure">
+      <div class="section-title"><span class="dot"></span><span>📁 專案結構</span></div>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>目錄說明</h3>
+          <ul class="list">
+            <li><span class="kbd">/.devcontainer/</span>：Codespaces 設定，<em>不需修改</em></li>
+            <li><span class="kbd">/data/</span>：地震資料、CSV 等</li>
+            <li><span class="kbd">/notebooks/</span>：Jupyter 範例與講義</li>
+            <li><span class="kbd">/hw/</span>：各週作業與需完成檔案</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>小技巧</h3>
+          <div class="kbdline"><span class="kbd">Ctrl</span> + <span class="kbd">P</span> 快速開檔</div>
+          <div class="kbdline"><span class="kbd">Ctrl</span> + <span class="kbd">~</span> 開啟終端機</div>
+          <div class="kbdline"><span class="kbd">Shift</span> + <span class="kbd">Enter</span> 執行 Notebook cell</div>
+          <p class="muted">（Mac 請用 <span class="kbd">⌘</span> 取代 <span class="kbd">Ctrl</span>）</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workflow -->
+    <section id="workflow">
+      <div class="section-title"><span class="dot"></span><span>📝 作業與課程完整工作流程</span></div>
+
+      <details open>
+        <summary>第 1 步：Fork 課程專案到你的帳號（學期做一次）</summary>
+        <div class="step timeline">
+          <p>前往課程 Repo，點右上 <strong>Fork</strong> → <strong>Create fork</strong>。</p>
+          <div class="callout">之後所有作業都在你自己的 Fork 進行。</div>
+        </div>
+      </details>
+
+      <details>
+        <summary>第 2 步：建立你的雲端開發環境（Codespace）</summary>
+        <div class="step timeline">
+          <ol class="list">
+            <li>進入你 Fork 的 Repo，點綠色 <strong>&lt;&gt; Code</strong></li>
+            <li>選擇 <strong>Create codespace on main</strong></li>
+            <li>等待 1–2 分鐘，VS Code 網頁版出現即可開始</li>
+          </ol>
+          <div class="codeblock">
+            <button class="copy" data-copy="source env.sh">複製</button>
+<pre><code># 初次開啟後建議先載入環境
+source env.sh</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>第 3 步：同步老師的更新（日常動作）</summary>
+        <div class="step timeline">
+          <div class="callout warning">同步前請先確認你的作業都有 <span class="kbd">commit</span>（用 <span class="kbd">git status</span> 檢查）。</div>
+          <h4>（A）設定上游 upstream（只做一次）</h4>
+          <div class="codeblock">
+            <button class="copy" data-copy="git remote add upstream https://github.com/cwbdayi638/geophysics-class-2025.git">複製</button>
+<pre><code>git remote add upstream https://github.com/cwbdayi638/geophysics-class-2025.git
+git remote -v</code></pre>
+          </div>
+          <h4>（B）拉取並合併更新（每次要開始新作業前）</h4>
+          <div class="codeblock">
+            <button class="copy" data-copy="git fetch upstream&#10;git merge upstream/main&#10;git push origin main">複製</button>
+<pre><code>git fetch upstream
+git merge upstream/main
+git push origin main</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>第 4 步：在 Codespace 完成作業並儲存進度</summary>
+        <div class="step timeline">
+          <p>至 <span class="kbd">/hw/hwX/</span> 依指示完成 <span class="kbd">學號.ipynb</span>。</p>
+          <div class="codeblock">
+            <button class="copy" data-copy='git add .&#10;git commit -m "完成 HW1 第一、二題"&#10;git push'>複製</button>
+<pre><code># 1) 加入所有變更
+git add .
+
+# 2) 建立版本紀錄（請修改訊息）
+git commit -m "完成 HW1 第一、二題"
+
+# 3) 推送到你的 GitHub Repo
+git push</code></pre>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>第 5 步：繳交作業（建立 Pull Request, PR）</summary>
+        <div class="step timeline">
+          <ol class="list">
+            <li>回到你 Fork 的 Repo 頁，點 <strong>Contribute → Open pull request</strong></li>
+            <li>確認 <strong>Base</strong> 是老師的 Repo、<strong>Head</strong> 是你的 Repo</li>
+            <li>標題建議：<span class="kbd">[HW1] 姓名 - 學號</span></li>
+            <li>內容需含：<em>目的、方法、結果圖、觀察與討論</em></li>
+          </ol>
+        </div>
+      </details>
+
+      <details>
+        <summary>第 6 步：接收回饋與修改</summary>
+        <div class="step timeline">
+          <p>老師會在 PR 直接評語/打分，如需修改，回 Codespace：</p>
+          <div class="codeblock">
+            <button class="copy" data-copy='git add .&#10;git commit -m "根據回饋修正 HW1"&#10;git push'>複製</button>
+<pre><code>git add .
+git commit -m "根據回饋修正 HW1"
+git push    # 既有 PR 會自動更新</code></pre>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- FAQ / Conflicts -->
+    <section id="faq">
+      <div class="section-title"><span class="dot"></span><span>❓ 常見問題</span></div>
+
+      <div class="card">
+        <h3>合併衝突（Merge Conflict）怎麼辦？</h3>
+        <p class="muted">通常是你和老師同時改到某檔案同一行。別緊張，這是 Git 的正常機制。</p>
+        <ol class="list">
+          <li>VS Code 會標記衝突區塊（<span class="kbd">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> / <span class="kbd">=======</span> / <span class="kbd">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span>）。</li>
+          <li>選擇保留「你的/老師的」或手動合併，刪除標記。</li>
+          <li>完成後 <span class="kbd">git add .</span>、<span class="kbd">git commit</span>。</li>
+          <li>仍不確定時，請儘快向老師或助教求助。</li>
+        </ol>
+      </div>
+
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>常用一鍵同步腳本</h3>
+          <div class="codeblock">
+            <button class="copy" data-copy='git remote -v&#10;echo "---------------"&#10;git fetch upstream&#10;echo "---------------"&#10;git merge upstream/main&#10;echo "---------------"&#10;git push origin main'>複製</button>
+<pre><code>git remote -v
+echo "---------------"
+git fetch upstream
+echo "---------------"
+git merge upstream/main
+echo "---------------"
+git push origin main</code></pre>
+          </div>
+        </div>
+        <div class="card">
+          <h3>回到專案根目錄與基本提交</h3>
+          <div class="codeblock">
+            <button class="copy" data-copy='cd /workspaces/geophysics-class-2025&#10;git status&#10;git add .&#10;git commit -m "Add $1"&#10;git push'>複製</button>
+<pre><code># 1) 回到根目錄
+cd /workspaces/geophysics-class-2025
+
+# 2) 查看狀態
+git status
+
+# 3) 追蹤與提交
+git add .
+git commit -m "Add $1"
+
+# 4) 推送到 GitHub
+git push</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout danger">
+        <strong>提醒：</strong>同步前務必先提交你的變更；若看到很多未追蹤/未提交檔案，請先 <span class="kbd">git add .</span> 與 <span class="kbd">git commit</span>。
+      </div>
+    </section>
+
+    <footer>
+      <div>© 2025 Geophysics Class • Safety first • Made with ❤️ for learning</div>
+    </footer>
+  </div>
+
+  <script>
+    // 一鍵複製
+    document.querySelectorAll(".copy").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        const text = btn.getAttribute("data-copy");
+        try{
+          await navigator.clipboard.writeText(text);
+          const old = btn.textContent;
+          btn.textContent = "已複製 ✓";
+          btn.style.color = "#34d399";
+          setTimeout(()=>{ btn.textContent = old; btn.style.color=""; }, 1400);
+        }catch(e){
+          btn.textContent = "複製失敗";
+          btn.style.color = "#f87171";
+          setTimeout(()=>{ btn.textContent = "複製"; btn.style.color=""; }, 1400);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
