@@ -8,7 +8,7 @@ git status
 git add .
 
 # 4. 提交變更並附上說明
-git commit -m "Add ..."
+git commit -m "Add $1"
 
 # 5. 推送到 GitHub
 git push

@@ -5,7 +5,7 @@ channels:
   - defaults
 
 dependencies:
-  - python=3.9
+  - python=3.11  # <--- 主要修改點：將版本從 3.9 升級到 3.11
   - numpy
   - pandas
   - xarray
@@ -16,7 +16,7 @@ dependencies:
   - obspy
   - jupyter
   - pip
-  - git-lfs  # <--- 在這裡新增這一行
+  - git-lfs
 
   - pip:
     - streamlit

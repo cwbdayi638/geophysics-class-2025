@@ -6,7 +6,9 @@
 	// --- 生命週期指令 ---
 	// 'postCreateCommand'：在容器建立完成後執行的指令。
 	// 我們使用它來根據 environment.yml 檔案建立 Conda 環境。
+	//"postCreateCommand": "conda env create -f .devcontainer/environment.yml && conda run -n pygmt git lfs install --skip-smudge && conda init && source ~/.bashrc && conda activate pygmt",
 	"postCreateCommand": "conda env create -f .devcontainer/environment.yml",
+
 	// --- 客製化設定 ---
 	"customizations": {
 		"vscode": {
@@ -24,7 +26,8 @@
 				"ms-python.python",
 				"ms-toolsai.jupyter",
 				"eamodio.gitlens",
-				"ms-python.isort"
+				"ms-python.isort",
+				"ms-vscode.vscode-websearchforcopilot"
 			]
 		}
 	},
